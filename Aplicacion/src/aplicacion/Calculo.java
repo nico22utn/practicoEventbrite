@@ -21,26 +21,11 @@ public class Calculo {
     String tipoBandera=null;
     int aleatorio=0;
     List<Integer> descartados=new ArrayList<>();
-    
-    public modoJuego elegirModo(String a){
-        if(a.equals(modoJuego.PC.name())){
-            System.out.println("MODO 'PC' elegido");
-            return modoJuego.PC;
-        }
-        else 
-        if(a.equals(modoJuego.PERSONA.name())){
-            System.out.println("MODO 'PERSONA' elegido");
-            System.out.println("Conteste a las preguntas con los siguientes simbolos..");
-            System.out.println("Con '"+CalculoUtils.AUMENTAR+"' para indicar a la maquina que el numero a adivinar es mayor.");
-            System.out.println("Con '"+CalculoUtils.DISMINUIR+"' para indicar a la maquina que el numero a adivinar es menor.");
-            System.out.println("Con '"+CalculoUtils.IGUAL+"' para indicar que ha adivinado el numero.");
-            return modoJuego.PERSONA;
-        }
-        return null;
-    }
+
     public void jugarPc(int valorAdivinar){
        
-        int valorTomado=new Integer(tomarValor());
+        try {
+            int valorTomado=new Integer(tomarValor());
             if(valorTomado<valorAdivinar){
                 System.out.println("El valor a adivinar es mayor que el que ingresaste.");
                 jugarPc(valorAdivinar);
@@ -52,46 +37,56 @@ public class Calculo {
             if(valorTomado==valorAdivinar){
                 System.out.println("Adivinaste!");
             }
+        }
+        catch(NumberFormatException e){
+            System.out.println("Caracter no valido. Fin Aplicacion.");
+        }
     }
-    public void jugarMaquina(){
-        if(bandera!=0 && tipoBandera!=null){
+    public boolean jugarMaquina(){
+        try {
+            if(bandera!=0 && tipoBandera!=null){
             evaluarBanderas(bandera, tipoBandera);
-        }
-        else{
-            aleatorio=valorRandom();
-        }
+            }
+            else{
+                aleatorio=valorRandom();
+            }
         System.out.println("Su numero es "+aleatorio+"?");
         String caracter=tomarValor();
         if(!caracter.equals(CalculoUtils.IGUAL)){
             if(caracter.equals(CalculoUtils.AUMENTAR) || caracter.equals(CalculoUtils.DISMINUIR)){
                 bandera=aleatorio;
-                descartados.add(bandera);
                 tipoBandera=caracter;
+                descartar();
             }
             else{
                 System.out.println("Ingrese un caracter apropiado");
             }
-            jugarMaquina();
+            return jugarMaquina();
         }
+        }
+        catch(StackOverflowError e){
+           return false;
+        }
+        return true;
     }
     
-    public int evaluarBanderas(int bandera, String tipoBandera){
+    public int evaluarBanderas(int bandera, String tipoBandera) throws StackOverflowError{
         aleatorio=valorRandom();
-        if(!descartados.contains(aleatorio)){
-            if(tipoBandera.equals(CalculoUtils.AUMENTAR)){
-                if(aleatorio<bandera){
-                    evaluarBanderas(bandera, tipoBandera);
+            if(!descartados.contains(aleatorio)){
+                if(tipoBandera.equals(CalculoUtils.AUMENTAR)){
+                    if(aleatorio<bandera){
+                        evaluarBanderas(bandera, tipoBandera);
+                    }
                 }
-        }
-            if(tipoBandera.equals(CalculoUtils.DISMINUIR)){
-                if(aleatorio>bandera){
-                    evaluarBanderas(bandera, tipoBandera);
-                }
-            } 
-        }
-        else{
-            evaluarBanderas(bandera, tipoBandera);
-        }
+                    if(tipoBandera.equals(CalculoUtils.DISMINUIR)){
+                        if(aleatorio>bandera){
+                            evaluarBanderas(bandera, tipoBandera);
+                        }
+                    } 
+            }
+            else{
+                evaluarBanderas(bandera, tipoBandera);
+            }
         return aleatorio;
     }
     
@@ -99,11 +94,25 @@ public class Calculo {
         Random r=new Random();
         return r.nextInt(100);
     }
+    public void descartar(){
+        if(tipoBandera.equals(CalculoUtils.AUMENTAR)){
+            for(int i=0;i<=bandera;i++)
+                if(!descartados.contains(i)){
+                    descartados.add(i);
+                }
+        }
+        else 
+            if(tipoBandera.equals(CalculoUtils.DISMINUIR)){
+            for(int i=bandera;i<100;i++){
+                if(!descartados.contains(i)){
+                    descartados.add(i);
+                }
+            }
+        }
+    }
     public  String tomarValor(){
         Scanner lector=new Scanner(System.in);
         return lector.next();
     }
-    public enum modoJuego{
-        PC,PERSONA
-    }
+
 }

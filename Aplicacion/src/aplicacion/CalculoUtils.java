@@ -15,6 +15,6 @@ public class CalculoUtils {
     public static final String DISMINUIR="-";
     public static final String IGUAL="=";
     public static final int parametroJuego=100;
-    public static final String MODO_PC="2";
-    public static final String MODO_PERSONA="1";
+    public static final String MODO_PC="PC";
+    public static final String MODO_PERSONA="PERSONA";
 }
