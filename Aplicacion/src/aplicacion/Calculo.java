@@ -92,7 +92,11 @@ public class Calculo {
     
     public int valorRandom(){
         Random r=new Random();
-        return r.nextInt(100);
+        int random=r.nextInt(101);
+        if(random>0){
+            return random;
+        }
+        return valorRandom();
     }
     public void descartar(){
         if(tipoBandera.equals(CalculoUtils.AUMENTAR)){
