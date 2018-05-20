@@ -31,9 +31,9 @@ public class Calculo {
         if(a.equals(modoJuego.PERSONA.name())){
             System.out.println("MODO 'PERSONA' elegido");
             System.out.println("Conteste a las preguntas con los siguientes simbolos..");
-            System.out.println("Con '+' para indicar a la maquina que el numero a adivinar es mayor.");
-            System.out.println("Con '-' para indicar a la maquina que el numero a adivinar es menor.");
-            System.out.println("Con '=' para indicar que ha adivinado el numero.");
+            System.out.println("Con '"+CalculoUtils.AUMENTAR+"' para indicar a la maquina que el numero a adivinar es mayor.");
+            System.out.println("Con '"+CalculoUtils.DISMINUIR+"' para indicar a la maquina que el numero a adivinar es menor.");
+            System.out.println("Con '"+CalculoUtils.IGUAL+"' para indicar que ha adivinado el numero.");
             return modoJuego.PERSONA;
         }
         return null;

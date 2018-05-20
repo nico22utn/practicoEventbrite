@@ -20,8 +20,8 @@ public class Aplicacion {
     public static void main(String[] args) {
         // TODO code application logic here
         System.out.println("Bienveinido al juego ENTRE100");
-        System.out.println("Ingrese '1' para elegir el modo 'Adivina el numero la persona.'");
-        System.out.println("Ingrese '2' para elegir el modo 'Adivina el numero la maquina.'");
+        System.out.println("Ingrese '"+CalculoUtils.MODO_PERSONA+"' para elegir el modo 'Adivina el numero la persona.'");
+        System.out.println("Ingrese '"+CalculoUtils.MODO_PC+"' para elegir el modo 'Adivina el numero la maquina.'");
         Calculo calculo= new Calculo();
         Scanner lector=new Scanner(System.in); 
         int valorPantalla=lector.nextInt();
