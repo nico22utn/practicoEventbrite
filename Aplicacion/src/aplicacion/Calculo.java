@@ -11,6 +11,7 @@ import java.util.Scanner;
 /**
  *
  * @author Nicolas
+ * Esta clase se va a encargar de los 2 modulos del juego
  */
 public class Calculo {
     
