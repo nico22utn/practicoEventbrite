@@ -5,6 +5,8 @@
  */
 package aplicacion;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -16,7 +18,9 @@ import java.util.Scanner;
 public class Calculo {
     
     int bandera=0;
-    CaracterJuegoPC tipoBandera=null;
+    String tipoBandera=null;
+    int aleatorio=0;
+    List<Integer> descartados=new ArrayList<>();
     
     public modoJuego elegirModo(String a){
         if(a.equals(modoJuego.PC.name())){
@@ -50,7 +54,6 @@ public class Calculo {
             }
     }
     public void jugarMaquina(){
-        int aleatorio=0;
         if(bandera!=0 && tipoBandera!=null){
             evaluarBanderas(bandera, tipoBandera);
         }
@@ -59,36 +62,40 @@ public class Calculo {
         }
         System.out.println("Su numero es "+aleatorio+"?");
         String caracter=tomarValor();
-        if(!caracter.equals(CaracterJuegoPC.IGUAL.name())){
-            if(caracter.equals(CaracterJuegoPC.AUMENTAR.name()) || caracter.equals(CaracterJuegoPC.DISMINUIR.name())){
+        if(!caracter.equals(CalculoUtils.IGUAL)){
+            if(caracter.equals(CalculoUtils.AUMENTAR) || caracter.equals(CalculoUtils.DISMINUIR)){
                 bandera=aleatorio;
-                tipoBandera=CaracterJuegoPC.valueOf(caracter);
+                descartados.add(bandera);
+                tipoBandera=caracter;
             }
             else{
                 System.out.println("Ingrese un caracter apropiado");
             }
             jugarMaquina();
         }
-        System.out.println("Adiviné tu número, humano.");
-        
     }
     
-    public int evaluarBanderas(int bandera, CaracterJuegoPC tipoBandera){
-        int aleatorio=valorRandom();
-        if(tipoBandera.equals(CaracterJuegoPC.AUMENTAR)){
-            if(aleatorio<bandera){
-                evaluarBanderas(bandera, tipoBandera);
-            }
+    public int evaluarBanderas(int bandera, String tipoBandera){
+        aleatorio=valorRandom();
+        if(!descartados.contains(aleatorio)){
+            if(tipoBandera.equals(CalculoUtils.AUMENTAR)){
+                if(aleatorio<bandera){
+                    evaluarBanderas(bandera, tipoBandera);
+                }
         }
-        if(tipoBandera.equals(CaracterJuegoPC.DISMINUIR)){
-            if(aleatorio>bandera){
-                evaluarBanderas(bandera, tipoBandera);
-            }
+            if(tipoBandera.equals(CalculoUtils.DISMINUIR)){
+                if(aleatorio>bandera){
+                    evaluarBanderas(bandera, tipoBandera);
+                }
+            } 
+        }
+        else{
+            evaluarBanderas(bandera, tipoBandera);
         }
         return aleatorio;
     }
     
-    private int valorRandom(){
+    public int valorRandom(){
         Random r=new Random();
         return r.nextInt(100);
     }
@@ -98,17 +105,5 @@ public class Calculo {
     }
     public enum modoJuego{
         PC,PERSONA
-    }
-    public enum CaracterJuegoPC{
-        AUMENTAR("+"),DISMINUIR("-"),IGUAL("=");
-
-        private final String simbolo;
-        CaracterJuegoPC(String car) {
-        this.simbolo=car;    
-        }
-
-        public String getSimbolo() {
-            return simbolo;
-        }
     }
 }

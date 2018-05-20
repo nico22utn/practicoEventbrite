@@ -20,20 +20,23 @@ public class Aplicacion {
     public static void main(String[] args) {
         // TODO code application logic here
         System.out.println("Bienveinido al juego ENTRE100");
-        System.out.println("Ingrese 'PC' para elegir el modo Adivina el numero la maquina.");
-        System.out.println("Ingrese 'PERSONA' para elegir el modo Adivina el numero la maquina.");
+        System.out.println("Ingrese '1' para elegir el modo 'Adivina el numero la persona.'");
+        System.out.println("Ingrese '2' para elegir el modo 'Adivina el numero la maquina.'");
         Calculo calculo= new Calculo();
-        Scanner lector=new Scanner(System.in);       
-        if(lector.next().equals(Calculo.modoJuego.PC.name())){
+        Scanner lector=new Scanner(System.in); 
+        int valorPantalla=lector.nextInt();
+        if(valorPantalla==1){
             //La maquina crea un numero y el flaco tiene que averiguar cual es.
             Random r= new Random();
             int valorAdivinar=r.nextInt(100);
             System.out.println("Cuál es el numero?");
             calculo.jugarPc(valorAdivinar);
         }
-        if(lector.next().equals(Calculo.modoJuego.PERSONA.name())){
+        else 
+        if(valorPantalla==2){
             //En esta ocasion la maquina intentará adivinar el numero que pensó el humano.
             calculo.jugarMaquina();
+            System.out.println("Adiviné tu número, humano!");
         }
     }
     
